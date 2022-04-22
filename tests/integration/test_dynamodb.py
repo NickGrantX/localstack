@@ -534,6 +534,8 @@ class TestDynamoDB:
         ]
         assert item
 
+        dynamodb_client.delete_table(TableName=table_name)
+
     def test_dynamodb_partiql_missing(self, dynamodb_client):
         table_name = "table_with_stream_%s" % short_uid()
 
