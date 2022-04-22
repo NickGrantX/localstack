@@ -19,6 +19,7 @@ from localstack.aws.api import (
     handler,
 )
 from localstack.aws.api.dynamodb import (
+    BatchExecuteStatementOutput,
     BatchGetItemOutput,
     BatchGetRequestMap,
     BatchWriteItemInput,
@@ -47,6 +48,7 @@ from localstack.aws.api.dynamodb import (
     ListTablesOutput,
     ListTagsOfResourceOutput,
     NextTokenString,
+    PartiQLBatchRequest,
     PositiveIntegerObject,
     ProvisionedThroughputExceededException,
     PutItemInput,
@@ -1128,6 +1130,15 @@ class DynamoDBProvider(DynamodbApi, ServiceLifecycleHook):
                 records.append(new_record)
                 i += 1
         return records
+
+    def batch_execute_statement(
+        self,
+        context: RequestContext,
+        statements: PartiQLBatchRequest,
+        return_consumed_capacity: ReturnConsumedCapacity = None,
+    ) -> BatchExecuteStatementOutput:
+        result = self.forward_request(context)
+        return result
 
     def prepare_batch_write_item_records(
         self,
